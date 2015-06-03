@@ -1,5 +1,5 @@
 function tell(message, options, callback) {
-  if(typeof options === "function" && callback == undefined) {
+  if(typeof options === "function") {
     callback = options
     options = {}
   }
