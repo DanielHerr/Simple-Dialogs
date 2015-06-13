@@ -55,7 +55,7 @@ function ask(message, options, callback) {
     dialog.appendChild(no)
     if(callback) {
       dialog.addEventListener("close", function() {
-        callback(dialog.returnValue)
+        callback(dialog.returnValue || false)
       })
     }
     document.body.appendChild(dialog)
