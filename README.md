@@ -1,4 +1,17 @@
 # Simple Dialogs
-Easily create modal dialogs. Uses the dialog element, with alert and confirm as fallbacks.
+Easily create modal dialogs. Requires a dialog element polyfill.
 
-<a href="https://6d52abe77f4525a6f483d5175ed2c0817bb694f6.googledrive.com/host/0B9_ds1FPyRuZTWJSZEEyenJhNXc/demo.html" target="blank">Demo</a>
+Usage:
+```javascript
+tell("It works.")
+tell("It still works.", { text: "Close", side: "left" }).then(function() {
+ console.log("Dialog closed.")
+})
+ask("Does it work now?", {
+ yes: { text: "Proceed", side: "right" }, no: { text: "Exit", side: "left" }
+}).then(function() {
+ console.log("Dialog closed and works.")
+}).catch(function() {
+ console.log("Dialog closed and fails.")
+})
+```
