@@ -1,62 +1,61 @@
-function tell(message, options, callback) {
- if(typeof(options) == "function") {
-  callback = options
-  options = {}
- }
- options = options || {}
- var dialog = document.createElement("dialog")
- if(dialog.showModal) {
+"use strict"
+
+function tell(message, options) {
+ let promise = new Promise(function(resolve) {
+  if(typeof(options) == "function") {
+   callback = options
+   options = {}
+  }
+  options = options || {}
+  let dialog = document.createElement("dialog")
   dialog.textContent = message
   dialog.innerHTML = dialog.innerHTML.split("\n").join("<br>") + "<br><br>"
-  var close = document.createElement("button")
-  close.textContent = options.text || "Close"
+  let close = document.createElement("button")
+  close.textContent = options.text || "Continue"
   close.style.float = options.side || "right"
   close.addEventListener("click", function() {
    dialog.close()
   })
   dialog.appendChild(close)
-  if(callback) {
-   dialog.addEventListener("close", callback)
-  }
+  dialog.addEventListener("close", resolve)
   document.body.appendChild(dialog)
   dialog.showModal()
- } else if(callback) {
-  callback(alert(message))
- } else { alert(message)}
+ })
+ return(promise)
 }
 
-function ask(message, options, callback) {
- if(typeof options === "function") {
-  callback = options
-  options = {}
- }
- options = options || {}
- var dialog = document.createElement("dialog")
- if(dialog.showModal) {
+function ask(message, options) {
+ let promise = new Promise(function(resolve, reject) {
+  if(typeof options === "function") {
+   callback = options
+   options = {}
+  }
+  options = options || {}
+  let dialog = document.createElement("dialog")
   dialog.textContent = message
   dialog.innerHTML = dialog.innerHTML.split("\n").join("<br>") + "<br><br>" 
-  var yes = document.createElement("button")
-  yes.textContent = options.yestext || "Yes"
-  yes.style.float = options.yesside || "left"
+  let yes = document.createElement("button")
+  yes.textContent = options.yes.text || "Yes"
+  yes.style.float = options.yes.side || "left"
   yes.addEventListener("click", function() {
    dialog.close(true)
   })
   dialog.appendChild(yes)
-  var no = document.createElement("button")
-  no.textContent = options.notext || "No"
-  no.style.float = options.noside || "right"
+  let no = document.createElement("button")
+  no.textContent = options.no.text || "No"
+  no.style.float = options.no.side || "right"
   no.addEventListener("click", function() {
    dialog.close()
   })
   dialog.appendChild(no)
-  if(callback) {
-   dialog.addEventListener("close", function() {
-    callback(dialog.returnValue || false)
-   })
-  }
+  dialog.addEventListener("close", function() {
+   if(dialog.returnValue) {
+    resolve()
+   } else {
+    reject()
+  } })
   document.body.appendChild(dialog)
   dialog.showModal()
- } else if(callback) {
-  callback(confirm(message))
- } else { confirm(message)}
+ })
+ return(promise)
 }
