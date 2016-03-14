@@ -20,7 +20,7 @@ function tell(message, { closetext = "Close", closeside = "right" } = {}) {
   dialog.showModal()
 })) }
 
-function ask(message, { yestext = "Yes", yesside = "left", notext = "No", noside = "right", noerror = true } = {}) {
+function ask(message, { yestext = "Yes", yesside = "left", notext = "No", noside = "right", noerror = false } = {}) {
  return(new Promise(function(resolve, reject) {
   let dialog = document.createElement("dialog")
   dialog.textContent = message
